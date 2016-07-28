@@ -35,7 +35,7 @@ void framework_CoreTickHandler(void);
     确保添加的延时对象链表项是孤立的!
     若延时时间为0,则不执行任何操作
 */
-void __framework_CoreTimeManagerAddDelay(ListItem_t *pListItem, SchedTick_t delay);
+void __framework_CoreTimeManagerAddDelay(SchedList_t *pListItem, SchedTick_t delay);
 /*
     更新时间管理器,用于优化节拍中断执行效率
     当对象链表项可能从延时链表中删除时,建议调用本函数
