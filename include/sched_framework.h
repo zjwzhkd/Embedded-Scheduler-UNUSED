@@ -111,19 +111,20 @@ void framework_TaskSetCyclePeriod(SchedTask_t *task, SchedTick_t period, SchedBo
 SchedTick_t framework_TaskGetCycleTick(SchedTask_t *task);
 #endif
 
-/* 内部函数 ------------------------------------------------------------------*/
-/*记录就绪任务*/
-void __framework_TaskRecordReadyTask(SchedTask_t const *task);
-/*清除就绪任务*/
-void __framework_TaskResetReadyTask(SchedTask_t const *task);
 /*初始化所有任务*/
-void __framework_TaskInitialiseAll(void);
+void framework_TaskInitialiseAll(void);
 /*
     任务调度函数,
     返回SCHED_TRUE表示完成一次任务调度,
     返回SCHED_FALSE表示没有就绪任务,进行了一次空操作
 */
-SchedBool_t __framework_TaskExecute(void);
+SchedBool_t framework_TaskExecute(void);
+
+/* 内部函数 ------------------------------------------------------------------*/
+/*记录就绪任务*/
+void __framework_TaskRecordReadyTask(SchedTask_t const *task);
+/*清除就绪任务*/
+void __framework_TaskResetReadyTask(SchedTask_t const *task);
 /*
     时间管理器的延时对象到时回调函数,
     返回0表示时间管理器无进一步动作,
@@ -241,6 +242,13 @@ SchedStatus_t framework_DaemonAbortFromISR(SchedDaemon_t *daemon);
 /*在中断函数中获取指定守护任务的状态*/
 SchedStatus_t framework_DaemonGetStatusFromISR(SchedDaemon_t *daemon);
 
+/*
+    守护任务调度函数,
+    返回SCHED_TRUE表示完成一次任务调度,
+    返回SCHED_FALSE表示没有就绪任务,进行了一次空操作
+*/
+SchedBool_t framework_DaemonExecute(void);
+
 /* 内部函数 ------------------------------------------------------------------*/
 /*将守护任务添加到事件等待链表,确保链表项是孤立的*/
 void __framework_DaemonPlaceOnEventList(SchedList_t *pEventList, SchedDaemon_t *daemon, SchedEvent_t const *evt);
@@ -248,12 +256,6 @@ void __framework_DaemonPlaceOnEventList(SchedList_t *pEventList, SchedDaemon_t *
 void __framework_DaemonRemoveFromEventList(SchedDaemon_t *daemon);
 /*移除指定事件链表的所有链表项*/
 void __framework_DaemonResetEventList(SchedDaemon_t *pEventList);
-/*
-    守护任务调度函数,
-    返回SCHED_TRUE表示完成一次任务调度,
-    返回SCHED_FALSE表示没有就绪任务,进行了一次空操作
-*/
-SchedBool_t __framework_DaemonExecute(void);
 /*
     时间管理器的延时对象到时回调函数,
     返回0表示时间管理器无进一步动作,
