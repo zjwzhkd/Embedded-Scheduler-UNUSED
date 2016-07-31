@@ -204,10 +204,6 @@ SchedTick_t __framework_AlarmTimeArrivalHandler(SchedList_t *pArrivalListItem);
                                   守护任务管理
 
 *******************************************************************************/
-/* 全局变量 ------------------------------------------------------------------*/
-/*当前运行的守护任务*/
-extern struct sched_daemon *framework_daemonCurrentRunning;
-
 /* 数据结构 ------------------------------------------------------------------*/
 typedef struct sched_daemon SchedDaemon_t;
 struct sched_daemon
@@ -215,31 +211,29 @@ struct sched_daemon
     SchedDaemonFunction_t   daemonFunc;     /*守护任务处理函数*/
     SchedEvent_t            event;          /*守护任务响应事件*/
     SchedList_t             daemonListItem; /*对象管理链表项  */
-    SchedStatus_t           listPlace;      /*对象链表项位置  */
-    uint8_t                 prio;           /*守护任务优先级  */
 };
-
-/* 常量定义 ------------------------------------------------------------------*/
-/*守护任务最低优先级*/
-#define SCHED_DAEMON_LOWEST_PRIO        ( (uint8_t)0xFF )
 
 /* 操作函数 ------------------------------------------------------------------*/
 /*守护任务管理环境初始化*/
 void framework_DaemonEnvirInit(void);
 /*创建新守护任务*/
-SchedDaemon_t *framework_DaemonCreate(uint8_t prio, SchedDaemonFunction_t daemonFunc);
+SchedDaemon_t *framework_DaemonCreate(SchedDaemonFunction_t daemonFunc);
 
-/*唤醒守护任务并执行给定的事件*/
+/*
+    唤醒守护任务并执行给定的事件,
+    当守护任务处于休眠状态(SCHED_DAEMON_DORMANT)或者运行状态(SCHED_DAEMON_RUNNING)时,允许唤醒守护任务
+*/
 SchedStatus_t framework_DaemonCall(SchedDaemon_t *daemon, SchedEvent_t const *evt, SchedTick_t delay);
 /*终止指定的守护任务*/
-SchedStatus_t framework_DaemonAbort(SchedDaemon_t *daemon);
+void framework_DaemonAbort(SchedDaemon_t *daemon);
 /*获取指定守护任务的状态*/
 SchedStatus_t framework_DaemonGetStatus(SchedDaemon_t *daemon);
 
-/*在中断函数中唤醒守护任务并执行给定的事件*/
+/*
+    在中断函数中唤醒守护任务并执行给定的事件,
+    仅当守护任务处于休眠状态(SCHED_DAEMON_DORMANT), 允许在中断中唤醒守护任务
+*/
 SchedStatus_t framework_DaemonDelayCall(SchedDaemon_t *daemon, SchedEvent_t const *evt, SchedTick_t delay);
-/*在中断函数中终止指定的守护任务*/
-SchedStatus_t framework_DaemonAbortFromISR(SchedDaemon_t *daemon);
 /*在中断函数中获取指定守护任务的状态*/
 SchedStatus_t framework_DaemonGetStatusFromISR(SchedDaemon_t *daemon);
 
@@ -251,12 +245,6 @@ SchedStatus_t framework_DaemonGetStatusFromISR(SchedDaemon_t *daemon);
 SchedBool_t framework_DaemonExecute(void);
 
 /* 内部函数 ------------------------------------------------------------------*/
-/*将守护任务添加到事件等待链表,确保链表项是孤立的*/
-void __framework_DaemonPlaceOnEventList(SchedList_t *pEventList, SchedDaemon_t *daemon, SchedEvent_t const *evt);
-/*将指定的任务从事件等待链表中移除,并添加至就绪链表*/
-void __framework_DaemonRemoveFromEventList(SchedDaemon_t *daemon);
-/*移除指定事件链表的所有链表项*/
-void __framework_DaemonResetEventList(SchedDaemon_t *pEventList);
 /*
     时间管理器的延时对象到时回调函数,
     返回0表示时间管理器无进一步动作,
