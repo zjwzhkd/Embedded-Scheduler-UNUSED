@@ -51,7 +51,6 @@ SchedBool_t ret;
     {
         /*队列已满*/
         ret = SCHED_FALSE;
-        SCHED_CHECK(0,chkSCHED_QUEUE_OVERFLOW);
     }
     else
     {
@@ -91,7 +90,6 @@ SchedBool_t ret;
     {
         /*队列已满*/
         ret = SCHED_FALSE;
-        SCHED_CHECK(0,chkSCHED_QUEUE_OVERFLOW);
     }
     else
     {
