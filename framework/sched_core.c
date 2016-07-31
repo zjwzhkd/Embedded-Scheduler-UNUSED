@@ -35,6 +35,9 @@ void framework_CoreInit(void)
     /*内核环境初始化*/
     prvCoreEnvirInit();
     /*调度器组件初始化*/
+#if SCHED_TASK_EN
+    framework_TaskEnvirInit();
+#endif
     /*调度器底层初始化*/
     sched_PortInit();
 }
@@ -42,10 +45,23 @@ void framework_CoreInit(void)
 /*启动调度器*/
 void framework_CoreStart(void)
 {
+    SCHED_ASSERT(SCHED_CORE_STOP == framework_CoreStatus,errSCHED_CORE_START_BEFORE_INIT);
     framework_CoreStatus = SCHED_CORE_RUNNING;
-    while (1)
-    {
+#if SCHED_TASK_EN
+    framework_TaskInitialiseAll();
+#endif
 
+    for ( ;; )
+    {
+    #if SCHED_TASK_EN
+        if (SCHED_FALSE != framework_TaskExecute())
+        {
+
+        } else
+    #endif
+        {
+            sched_PortIdleHandler();
+        }
     }
 }
 
@@ -104,7 +120,7 @@ void framework_CoreTickHandler(void)
                         #if SCHED_TASK_CYCLE_EN
                             if (SCHED_LIST_CYCLE == pListItem->type)
                             {
-                                delay = 0;
+                                delay = __framework_TaskTimeArrivalHandler(pListItem);
                             } else
                         #endif  /* SCHED_TASK_CYCLE_EN */
                         #if SCHED_TASK_ALARM_EN

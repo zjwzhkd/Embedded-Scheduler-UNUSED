@@ -125,12 +125,15 @@ SchedBool_t framework_TaskExecute(void);
 void __framework_TaskRecordReadyTask(SchedTask_t const *task);
 /*清除就绪任务*/
 void __framework_TaskResetReadyTask(SchedTask_t const *task);
+
+#if SCHED_TASK_CYCLE_EN
 /*
     时间管理器的延时对象到时回调函数,
     返回0表示时间管理器无进一步动作,
     返回非0表示时间管理器将当前对象重新加入延时链表,返回值是延时时间
 */
 SchedTick_t __framework_TaskTimeArrivalHandler(SchedList_t *pArrivalListItem);
+#endif
 
 /*******************************************************************************
 
