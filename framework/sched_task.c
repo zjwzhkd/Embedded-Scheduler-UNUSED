@@ -313,6 +313,7 @@ uint8_t highestPrio;
         else
         {
             pTask = NULL;
+            internal_PriotblResetPrio(&taskReadyTable, highestPrio);
             SCHED_ASSERT(0,errSCHED_TASK_PRIO_OVER_LOWEST);
         }
     }
