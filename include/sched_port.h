@@ -25,17 +25,6 @@ typedef cpu_t   SchedCPU_t;
 #define SCHED_ExitCritical(x)           CPU_ExitCritical(x)
 #define SCHED_EnterCriticalFromISR()    CPU_EnterCriticalFromISR()
 #define SCHED_ExitCriticalFromISR(x)    CPU_ExitCriticalFromISR(x)
-/*中断检测*/
-/*
-    如果微控制器不支持中断环境判断,
-    则定义:
-        #define SCHED_IN_INTERRUPT()    ( -1 )
-*/
-#ifdef CPU_InHandlerMode
-    #define SCHED_IN_INTERRUPT()        CPU_InHandlerMode()
-#else
-    #define SCHED_IN_INTERRUPT()        ( -1 )
-#endif
 
 /* 调度器数据类型 ------------------------------------------------------------*/
 /*节拍类型*/
@@ -152,11 +141,8 @@ enum sched_status
 #if SCHED_ASSERT_EN
     #define SCHED_ASSERT(expr, errCode) \
         if (!(expr)) {sched_PortErrorHandler(errCode);}
-    #define SCHED_ASSERT_IN_INTERRUPT() \
-        SCHED_ASSERT(SCHED_IN_INTERRUPT(),errSCHED_NOT_IN_INTERRUPT)
 #else
     #define SCHED_ASSERT(expr, errCode) ((void)0)
-    #define SCHED_ASSERT_IN_INTERRUPT() ((void)0)
 #endif
 
 #if SCHED_CHECK_EN
