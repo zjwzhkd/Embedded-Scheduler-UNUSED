@@ -128,10 +128,12 @@ enum sched_status
     errSCHED_TASK_PRIO_IS_ALLOCATED,
     errSCHED_TASK_NOT_CREATED_BEFORE_CORE_RUNNING,
     errSCHED_TASK_NOT_EXISTED,
+    errSCHED_EVENT_SEND_NOT_USER_SIGNAL,
+    errSCHED_EVENT_SEND_BEFORE_CORE_RUNNING,
 
     chkSCHED_MALLOC_FAILED = 128,
-    chkSCHED_QUEUE_OVERFLOW,
     chkSCHED_TYPE_CONVERSION_FAILED,
+    chkSCHED_EVENT_SEND_FAILED,
 };
 
 /* 调度器宏定义 --------------------------------------------------------------*/
