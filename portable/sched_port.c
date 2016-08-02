@@ -22,6 +22,8 @@ void sched_PortInit(void)
         SCHED_CHECK(sizeof(EvtMsg_t)>=sizeof(SchedTick_t),chkSCHED_TYPE_CONVERSION_FAILED);
     }
     #endif
+    /*初始化内存管理*/
+    sched_PortHeapInit();
 }
 
 /**

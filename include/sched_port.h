@@ -156,6 +156,8 @@ enum sched_status
 void sched_PortInit(void);
 /*事件块复制*/
 void sched_PortEventCopy(SchedEvent_t *dest, SchedEvent_t const *src);
+/*内存管理初始化*/
+void sched_PortHeapInit(void);
 /*动态内存分配*/
 void *sched_PortMalloc(size_t size);
 /*动态内存释放*/
