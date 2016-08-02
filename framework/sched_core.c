@@ -126,7 +126,7 @@ void framework_CoreTickHandler(void)
                         #if SCHED_TASK_ALARM_EN
                             if (SCHED_LIST_ALARM == pListItem->type)
                             {
-                                delay = 0;
+                                delay = __framework_AlarmTimeArrivalHandler(pListItem);
                             } else
                         #endif  /* SCHED_TASK_ALARM_EN */
                         #endif  /* SCHED_TASK_EN */

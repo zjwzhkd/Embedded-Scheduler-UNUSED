@@ -174,8 +174,6 @@ struct sched_alarm
 };
 
 /* 操作函数 ------------------------------------------------------------------*/
-/*闹钟管理环境初始化*/
-void framework_AlarmEnvirInit(void);
 /*创建新闹钟*/
 SchedAlarm_t *framework_AlarmCreate(SchedTask_t *task, SchedEvent_t const *evt);
 
