@@ -38,6 +38,9 @@ void framework_CoreInit(void)
 #if SCHED_TASK_EN
     framework_TaskEnvirInit();
 #endif
+#if SCHED_DAEMON_EN
+    framework_DaemonEnvirInit();
+#endif
     /*调度器底层初始化*/
     sched_PortInit();
 }
@@ -55,6 +58,12 @@ void framework_CoreStart(void)
     {
     #if SCHED_TASK_EN
         if (SCHED_FALSE != framework_TaskExecute())
+        {
+
+        } else
+    #endif
+    #if SCHED_DAEMON_EN
+        if (SCHED_FALSE != framework_DaemonExecute())
         {
 
         } else
@@ -114,7 +123,6 @@ void framework_CoreTickHandler(void)
                         }
                         /*延时结束,使用回调函数处理结束延时的对象*/
                         internal_ListRemove(pListItem);
-                        delay = 0;
                         {
                         #if SCHED_TASK_EN
                         #if SCHED_TASK_CYCLE_EN
@@ -133,7 +141,7 @@ void framework_CoreTickHandler(void)
                         #if SCHED_DAEMON_EN
                             if (SCHED_LIST_DAEMON == pListItem->type)
                             {
-                                delay = 0;
+                                delay = __framework_DaemonTimeArrivalHandler(pListItem);
                             } else
                         #endif  /* SCHED_DAEMON_EN */
                             {
