@@ -191,48 +191,47 @@ SchedBool_t     ret;
 SchedCPU_t      cpu_sr;
 SchedTask_t    *pTask;
 SchedEvent_t    event;
-uint8_t         fsm_allowed;
 
     cpu_sr = SCHED_EnterCritical(); /*进入临界区*/
-    pTask = prvGetHighestPriorityReadyTask();
-    if (NULL != pTask)
     {
-        /*获取未处理事件*/
-        fsm_allowed = 0;
-        #if SCHED_TASK_CYCLE_EN
-        if (pTask->cycleFlag)
+        pTask = prvGetHighestPriorityReadyTask();
+        if (NULL != pTask)
         {
-            fsm_allowed = 1;
-            pTask->cycleFlag = 0;
-            sched_PortEventCopy(&event, &internal_event[SCHED_SIG_CYCLE]);
-            event.msg = (EvtMsg_t)pTask->cycleTick;
-        } else
-        #endif
-        if (SCHED_SUCCESS == __framework_EventReceive(pTask,&event))
-        {
-            fsm_allowed = 1;
+            /*获取未处理事件*/
+            #if SCHED_TASK_CYCLE_EN
+            if (pTask->cycleFlag)
+            {
+                pTask->cycleFlag = 0;
+                sched_PortEventCopy(&event, &internal_event[SCHED_SIG_CYCLE]);
+                event.msg = (EvtMsg_t)(pTask->cycleTick);
+                ret = SCHED_TRUE;
+            } else
+            #endif
+            if (SCHED_SUCCESS == __framework_EventReceive(pTask,&event))
+            {
+                ret = SCHED_TRUE;
+            }
+            else
+            {
+                ret = SCHED_FALSE;
+            }
+            /*判断是否剩余事件未处理*/
+            if (SCHED_EVENT_RECEIVE_FAILED == __framework_EventTryReceive(pTask))
+            {
+                __framework_TaskResetReadyTask(pTask);
+            }
         }
         else
         {
-            fsm_allowed = 0;
+            ret = SCHED_FALSE;
         }
-        /*判断是否存在事件未处理*/
-        if (SCHED_EVENT_RECEIVE_FAILED == __framework_EventTryReceive(pTask))
-        {
-            __framework_TaskResetReadyTask(pTask);
-        }
-        SCHED_ExitCritical(cpu_sr); /*退出临界区*/
-        /*状态机处理事件*/
-        if (fsm_allowed)
-        {
-            framework_FSM_Dispatch(&pTask->fsm,&event);
-        }
-        ret = SCHED_TRUE;
     }
-    else
+    SCHED_ExitCritical(cpu_sr);     /*退出临界区*/
+
+    /*状态机处理事件*/
+    if (ret)
     {
-        SCHED_ExitCritical(cpu_sr); /*退出临界区*/
-        ret = SCHED_FALSE;
+        framework_FSM_Dispatch(&pTask->fsm,&event);
     }
 
     return (ret);
@@ -301,21 +300,9 @@ uint8_t highestPrio;
     if (SCHED_FALSE == internal_PriotblIsEmpty(&taskReadyTable))
     {
         highestPrio = internal_PriotblGetHighestPrio(&taskReadyTable);
-        if (highestPrio <= SCHED_LOWEST_PRIORITY)
-        {
-            pTask = taskPrioGroup[highestPrio];
-            if (NULL == pTask)
-            {
-                internal_PriotblResetPrio(&taskReadyTable, highestPrio);
-                SCHED_ASSERT(0,errSCHED_TASK_NOT_EXISTED);
-            }
-        }
-        else
-        {
-            pTask = NULL;
-            internal_PriotblResetPrio(&taskReadyTable, highestPrio);
-            SCHED_ASSERT(0,errSCHED_TASK_PRIO_OVER_LOWEST);
-        }
+        SCHED_ASSERT(highestPrio<=SCHED_LOWEST_PRIORITY,errSCHED_TASK_PRIO_OVER_LOWEST);
+        pTask = taskPrioGroup[highestPrio];
+        SCHED_ASSERT(NULL != pTask,errSCHED_TASK_NOT_EXISTED);
     }
     else
     {
