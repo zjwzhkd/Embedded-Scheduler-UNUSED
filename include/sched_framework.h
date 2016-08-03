@@ -233,7 +233,7 @@ SchedStatus_t framework_DaemonGetStatus(SchedDaemon_t *daemon);
     在中断函数中唤醒守护任务并执行给定的事件,
     仅当守护任务处于休眠状态(SCHED_DAEMON_DORMANT), 允许在中断中唤醒守护任务
 */
-SchedStatus_t framework_DaemonDelayCall(SchedDaemon_t *daemon, SchedEvent_t const *evt, SchedTick_t delay);
+SchedStatus_t framework_DaemonCallFromISR(SchedDaemon_t *daemon, SchedEvent_t const *evt, SchedTick_t delay);
 /*在中断函数中获取指定守护任务的状态*/
 SchedStatus_t framework_DaemonGetStatusFromISR(SchedDaemon_t *daemon);
 
