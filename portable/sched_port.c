@@ -27,12 +27,11 @@ void sched_PortInit(void)
 }
 
 /**
- * 说明: 事件块复制
+ * 复制事件块
  *
- * 参数: 1.dest - 目标事件块地址
- *       2.src  - 源事件块地址
+ * @param dest: 目标事件块指针
  *
- * 返回: 无返回
+ * @param src: 源事件块地址
  */
 void sched_PortEventCopy(SchedEvent_t *dest, SchedEvent_t const *src)
 {
