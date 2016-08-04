@@ -12,13 +12,13 @@
                                     操作函数
 
 *******************************************************************************/
+
 /**
- * 说明: 初始化链表或者链表项
+ * 初始化链表或者链表项
  *
- * 参数: 1.pList - 待初始化的链表或链表项
- *       2.type  - 初始化对象类型
+ * @param pList: 待初始化的链表或链表项指针
  *
- * 返回: 无返回
+ * @param type: 初始化对象类型
  */
 void internal_ListInit(SchedList_t *pList, SchedBase_t type)
 {
@@ -29,12 +29,11 @@ void internal_ListInit(SchedList_t *pList, SchedBase_t type)
 }
 
 /**
- * 说明: 按照排序值从小到大的顺序插入链表项
+ * 按照排序值从小到大的顺序, 向指定的链表插入链表项
  *
- * 参数: 1.pList     - 链表指针
- *       2.pListItem - 待插入的链表项指针
+ * @param pList: 指定链表指针
  *
- * 返回: 无返回
+ * @param pListItem: 待插入的链表项指针
  */
 void internal_ListInsert(SchedList_t *pList, SchedList_t *pListItem)
 {
@@ -67,12 +66,11 @@ SchedTick_t const insertValue = pListItem->value;
 }
 
 /**
- * 说明: 向链表尾部插入链表项
+ * 向指定的链表尾部插入链表项
  *
- * 参数: 1.pList     - 链表指针
- *       2.pListItem - 待插入的链表项指针
+ * @param pList: 指定链表指针
  *
- * 返回: 无返回
+ * @param pListItem: 待插入的链表项指针
  */
 void internal_ListInsertEnd(SchedList_t *pList, SchedList_t *pListItem)
 {
@@ -88,11 +86,9 @@ void internal_ListInsertEnd(SchedList_t *pList, SchedList_t *pListItem)
 }
 
 /**
- * 说明: 移除链表项
+ * 移除指定链表项
  *
- * 参数: 1.pListItem - 待移除的链表项
- *
- * 返回: 无返回
+ * @param pListItem: 待移除的链表项指针
  */
 void internal_ListRemove(SchedList_t *pListItem)
 {
@@ -105,13 +101,13 @@ void internal_ListRemove(SchedList_t *pListItem)
 }
 
 /**
- * 说明: 判断链表是否为空或者链表项是否为孤立链表项
+ * 判断链表是否为空或者链表项是否为孤立链表项
  *
- * 参数: 1.pList - 链表指针
+ * @param pList: 链表或者链表项指针
  *
- * 返回: 布尔值,
- *       1.SCHED_FALSE 表示链表非空或者链表项非孤立
- *       2.SCHED_TRUE  表示链表为空或者链表项为孤立
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE),
+ *          SCHED_FALSE 表示链表非空或者链表项不是孤立的,
+ *          SCHED_TRUE  表示链表为空或者链表项是孤立的
  */
 SchedBool_t internal_ListIsEmpty(SchedList_t *pList)
 {

@@ -13,14 +13,15 @@
                                     操作函数
 
 *******************************************************************************/
+
 /**
- * 说明: 队列初始化
+ * 队列初始化
  *
- * 参数: 1.queue    - 待初始化队列的指针
- *       2.evtQueue - 事件块数组的首元素地址
- *       3.len      - 队列总长度(事件块数组元素个数)
+ * @param queue: 待初始化队列的指针
  *
- * 返回: 无返回
+ * @param evtQueue: 队列Buffer数组的首元素指针
+ *
+ * @param len: 队列长度, 长度若为0, 参数evtQueue传入为NULL
  */
 void internal_QueueInit(SchedQueue_t *queue, SchedEvent_t *evtQueue, EvtPos_t len)
 {
@@ -33,15 +34,15 @@ void internal_QueueInit(SchedQueue_t *queue, SchedEvent_t *evtQueue, EvtPos_t le
 }
 
 /**
- * 说明: 1.向队列尾部插入一个事件块
- *       2.通过复制事件块内容实现插入
+ * 向队列尾部插入一个事件块
  *
- * 参数: 1.queue - 待操作的队列指针
- *       2.evt   - 待复制的事件块指针
+ * @param queue: 目标队列指针
  *
- * 返回: 布尔值,
- *       1.SCHED_TRUE  表示操作成功
- *       2.SCHED_FALSE 表示队列已满
+ * @param evt: 待复制的事件块指针, 事件块内容复制到队列Buffer
+ *
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE),
+ *          SCHED_TRUE  表示事件块插入成功
+ *          SCHED_FALSE 表示队列已满
  */
 SchedBool_t internal_QueueSend(SchedQueue_t *queue, SchedEvent_t const *evt)
 {
@@ -72,15 +73,15 @@ SchedBool_t ret;
 }
 
 /**
- * 说明: 1.向队列头部插入一个事件块
- *       2.通过复制事件块内容实现插入
+ * 向队列头部插入一个事件块
  *
- * 参数: 1.queue - 待操作的队列指针
- *       2.evt   - 待复制的事件块指针
+ * @param queue: 目标队列指针
  *
- * 返回: 布尔值,
- *       1.SCHED_TRUE  表示操作成功
- *       2.SCHED_FALSE 表示队列已满
+ * @param evt: 待复制的事件块指针, 事件块内容复制到队列Buffer
+ *
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE),
+ *          SCHED_TRUE  表示事件块插入成功
+ *          SCHED_FALSE 表示队列已满
  */
 SchedBool_t internal_QueueSendFront(SchedQueue_t *queue, SchedEvent_t const *evt)
 {
@@ -113,14 +114,15 @@ SchedBool_t ret;
 }
 
 /**
- * 说明: 从队列头部取出一个事件块
+ * 从队列头部取出一个事件块
  *
- * 参数: 1.queue - 待操作的队列指针
- *       2.evt   - 保存结果的事件块指针
+ * @param queue: 目标队列指针
  *
- * 返回: 布尔值,
- *       1.SCHED_TRUE  表示操作成功
- *       2.SCHED_FALSE 表示队列为空
+ * @param evt: 保存结果的事件块指针, 事件块内容从队列Buffer中复制
+ *
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE),
+ *          SCHED_TRUE  表示事件块取出成功
+ *          SCHED_FALSE 表示队列已空
  */
 SchedBool_t internal_QueueReceive(SchedQueue_t *queue, SchedEvent_t *evt)
 {
@@ -144,13 +146,13 @@ SchedBool_t ret;
 }
 
 /**
- * 说明: 判断队列是否为空
+ * 判断队列是否为空
  *
- * 参数: 1.queue - 待操作的队列指针
+ * @param queue: 目标队列指针
  *
- * 返回: 布尔值,
- *       1.SCHED_TRUE  表示队列为空
- *       2.SCHED_FALSE 表示队列不空
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE),
+ *          SCHED_TRUE  表示队列为空
+ *          SCHED_FALSE 表示队列不空
  */
 SchedBool_t internal_QueueIsEmpty(SchedQueue_t *queue)
 {
@@ -168,13 +170,13 @@ SchedBool_t ret;
 }
 
 /**
- * 说明: 判断队列是否已满
+ * 判断队列是否已满
  *
- * 参数: 1.queue - 待操作的队列指针
+ * @param queue: 目标队列指针
  *
- * 返回: 布尔值,
- *       1.SCHED_TRUE  表示队列已满
- *       2.SCHED_FALSE 表示队列未满
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE),
+ *          SCHED_TRUE  表示队列已满
+ *          SCHED_FALSE 表示队列未满
  */
 SchedBool_t internal_QueueIsFull(SchedQueue_t *queue)
 {
@@ -192,11 +194,11 @@ SchedBool_t ret;
 }
 
 /**
- * 说明: 获取队列最大使用量
+ * 获取队列最大使用量
  *
- * 参数: 1.queue - 待操作的队列指针
+ * @param queue: 目标队列指针
  *
- * 返回: 队列最大使用量
+ * @return: 队列最大使用量
  */
 EvtPos_t internal_QueueGetMaxUsed(SchedQueue_t *queue)
 {
@@ -204,11 +206,11 @@ EvtPos_t internal_QueueGetMaxUsed(SchedQueue_t *queue)
 }
 
 /**
- * 说明: 获取队列长度
+ * 获取队列长度
  *
- * 参数: 1.queue - 待操作的队列指针
+ * @param queue: 目标队列指针
  *
- * 返回: 队列长度
+ * @return: 队列长度
  */
 EvtPos_t internal_QueueGetLength(SchedQueue_t *queue)
 {

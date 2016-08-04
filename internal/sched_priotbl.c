@@ -37,12 +37,11 @@ static uint8_t const FLASH_DATA priotbl_unmap[] =
                                     操作函数
 
 *******************************************************************************/
+
 /**
- * 说明: 初始化优先级记录表
+ * 初始化优先级记录表
  *
- * 参数: 1.tbl - 待初始化的优先级记录表指针
- *
- * 返回: 无返回
+ * @param tbl: 待初始化的优先级记录表指针
  */
 void internal_PriotblInit(SchedPrioTable_t *tbl)
 {
@@ -56,12 +55,11 @@ uint8_t i;
 }
 
 /**
- * 说明: 在优先级记录表中记录一个优先级
+ * 在优先级记录表中记录一个优先级
  *
- * 参数: 1.tbl  - 待操作的优先级记录表指针
- *       2.prio - 记录的优先级, 有效范围是0 - SCHED_PRIOTBL_LOWEST_PRIO
+ * @param tbl: 目标优先级记录表指针
  *
- * 返回: 无返回
+ * @param prio: 记录的优先级, 有效范围是0 - SCHED_PRIOTBL_LOWEST_PRIO
  */
 void internal_PriotblRecordPrio(SchedPrioTable_t *tbl, uint8_t prio)
 {
@@ -77,12 +75,11 @@ void internal_PriotblRecordPrio(SchedPrioTable_t *tbl, uint8_t prio)
 }
 
 /**
- * 说明: 在优先级记录表中清除一个优先级
+ * 在优先级记录表中清除一个优先级
  *
- * 参数: 1.tbl  - 待操作的优先级记录表指针
- *       2.prio - 清除的优先级, 有效范围是0 - SCHED_PRIOTBL_LOWEST_PRIO
+ * @param tbl: 目标优先级记录表指针
  *
- * 返回: 无返回
+ * @param prio: 清除的优先级, 有效范围是0 - SCHED_PRIOTBL_LOWEST_PRIO
  */
 void internal_PriotblResetPrio(SchedPrioTable_t *tbl, uint8_t prio)
 {
@@ -101,13 +98,13 @@ void internal_PriotblResetPrio(SchedPrioTable_t *tbl, uint8_t prio)
 }
 
 /**
- * 说明: 判断优先级记录表是否为空
+ * 判断优先级记录表是否为空
  *
- * 参数: tbl - 优先级记录表指针
+ * @param tbl: 目标优先级记录表指针
  *
- * 返回: 布尔值,
- *       1.SCHED_TRUE   表示优先级记录表为空
- *       2.SCHED_FALSE  表示优先级记录表不空
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE),
+ *          SCHED_TRUE  表示优先级记录表为空
+ *          SCHED_FALSE 表示优先级记录表不空
  */
 SchedBool_t internal_PriotblIsEmpty(SchedPrioTable_t const *tbl)
 {
@@ -122,12 +119,14 @@ SchedBool_t internal_PriotblIsEmpty(SchedPrioTable_t const *tbl)
 }
 
 /**
- * 说明: 获取优先级记录表中的最高优先级
+ * 获取优先级记录表中的最高优先级
  *
- * 参数: tbl - 优先级记录表指针
+ * @param tbl: 目标优先级记录表指针
  *
- * 返回: 1.如果优先级记录表非空, 返回记录的最高优先级
- *       2.如果优先级记录表为空, 返回0
+ * @return: 如果优先级记录表非空, 返回最高优先级,
+ *          如果优先级记录表为空, 返回0
+ *
+ * @note: 在调用本函数获取最高优先级之前, 确保优先级记录表非空
  */
 uint8_t internal_PriotblGetHighestPrio(SchedPrioTable_t const *tbl)
 {
