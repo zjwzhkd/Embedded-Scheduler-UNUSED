@@ -122,13 +122,15 @@ SchedCPU_t cpu_sr;
         task->cycleFlag   = 0;
         task->cycleTick   = 0;
         task->cyclePeriod = period;
+        /*直接触发信号*/
+        if (immedTRIG)
+        {
+            task->cycleFlag = 1;
+            __framework_TaskRecordReadyTask(task);
+        }
+        /*添加延时对象*/
         if (period > 0)
         {
-            if (immedTRIG)
-            {
-                task->cycleFlag = 1;
-                __framework_TaskRecordReadyTask(task);
-            }
             __framework_CoreTimeManagerAddDelay(&task->cycleListItem, period);
         }
         __framework_CoreTimeManagerUpdate();
