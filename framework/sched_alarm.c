@@ -14,15 +14,16 @@
                                     操作函数
 
 *******************************************************************************/
+
 /**
- * 说明: 1.创建新闹钟
- *       2.仅允许在调度器启动前创建闹钟
+ * 创建新闹钟, 仅允许在调度器启动前创建闹钟
  *
- * 参数: 1.task - 目标任务控制块指针
- *       2.evt  - 闹钟到时触发的事件
+ * @param task: 闹钟目标任务控制块指针
  *
- * 返回: NULL   表示闹钟创建失败
- *       非NULL 表示闹钟控制块指针
+ * @param evt: 闹钟到时触发的事件
+ *
+ * @return: 若创建成功, 返回闹钟控制块指针
+ *          若创建失败, 返回NULL
  */
 SchedAlarm_t *framework_AlarmCreate(SchedTask_t *task, SchedEvent_t const *evt)
 {
@@ -45,12 +46,11 @@ SchedAlarm_t *pAlarm = NULL;
 }
 
 /**
- * 说明: 设置闹钟事件
+ * 设置闹钟事件
  *
- * 参数: 1.alarm - 闹钟控制块指针
- *       2.evt   - 闹钟到时触发的事件
+ * @param alarm: 闹钟控制块指针
  *
- * 返回: 无返回
+ * @param evt: 闹钟到时触发的事件
  */
 void framework_AlarmSetEvent(SchedAlarm_t *alarm, SchedEvent_t const *evt)
 {
@@ -67,12 +67,9 @@ SchedCPU_t cpu_sr;
 }
 
 /**
- * 说明: 1.取消闹钟响应
- *       2.必须在调度器启动后调用
+ * 取消闹钟响应, 必须在调度器启动后调用
  *
- * 参数: 1.alarm - 闹钟控制块指针
- *
- * 返回: 无返回
+ * @param alarm: 闹钟控制块指针
  */
 void framework_AlarmCancel(SchedAlarm_t *alarm)
 {
@@ -91,14 +88,11 @@ SchedCPU_t cpu_sr;
 }
 
 /**
- * 说明: 1.设置并重启闹钟
- *       2.必须在调度器启动后调用
- *       3.时间若为0则直接触发闹钟事件
+ * 设置并重启闹钟, 必须在调度器启动后调用
  *
- * 参数: 1.alarm  - 闹钟控制块指针
- *       2.period - 闹钟设置的时间
+ * @param alarm: 闹钟控制块指针
  *
- * 返回: 无返回
+ * @param period: 闹钟到时周期, 若为0则立即触发闹钟事件
  */
 void framework_AlarmSet(SchedAlarm_t *alarm, SchedTick_t period)
 {
@@ -125,13 +119,13 @@ SchedCPU_t cpu_sr;
 }
 
 /**
- * 说明: 获取闹钟状态
+ * 获取闹钟状态
  *
- * 参数: 1.alarm - 闹钟控制块指针
+ * @param alarm: 闹钟控制块指针
  *
- * 返回: 1.SCHED_ALARM_STOP    表示闹钟停止(闹钟已取消)
- *       2.SCHED_ALARM_RUNNING 表示闹钟正在运行
- *       3.SCHED_ALARM_ARRIVED 表示闹钟已到时(此时闹钟停止)
+ * @return: SCHED_ALARM_STOP    表示闹钟停止(闹钟已取消)
+ *          SCHED_ALARM_RUNNING 表示闹钟正在运行
+ *          SCHED_ALARM_ARRIVED 表示闹钟已到时(此时闹钟停止)
  */
 SchedStatus_t framework_AlarmGetStatus(SchedAlarm_t *alarm)
 {
@@ -165,15 +159,14 @@ SchedStatus_t   ret;
                                     内部函数
 
 *******************************************************************************/
+
 /**
- * 说明: 1.时间管理器的延时对象到时回调函数,
- *       2.返回0表示时间管理器无进一步动作,
- *       3.返回非0表示时间管理器将当前对象重新加入延时链表,返回值是延时时间
+ * 时间管理器的对象延时到时回调函数
  *
- * 参数: 1.pArrivalListItem - 结束延时的对象的链表项指针
+ * @param pArrivalListItem: 结束延时的对象的链表项指针
  *
- * 返回: 1.0  表示不将对象重新加入延时链表
- *       2.>0 表示将对象重新加入延时链表, 延时时间是返回值
+ * @return: 返回0表示时间管理器无进一步动作,
+ *          返回非零值表示时间管理器将当前对象重新加入延时链表,返回值是延时时间
  */
 SchedTick_t __framework_AlarmTimeArrivalHandler(SchedList_t *pArrivalListItem)
 {

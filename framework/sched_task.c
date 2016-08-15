@@ -37,15 +37,15 @@ uint8_t i;
 }
 
 /**
- * 说明: 1.创建一个新任务
- *       2.仅允许在调度器启动前创建新任务
+ * 创建一个新任务, 仅允许在调度器启动前创建新任务
  *
- * 参数: 1.prio     - 任务优先级
- *       2.queueLen - 消息队列长度
- *       3.initial  - 初始伪状态函数
+ * @param prio: 任务优先级
  *
- * 返回: 1.NULL   表示任务控制块分配失败
- *       2.非NULL 表示任务控制块指针
+ * @param queueLen: 消息队列长度, 在SCHED_TASK_EVENT_METHOD>0时有效
+ *
+ * @param initial: 状态机初始伪状态
+ *
+ * @return: 创建成功返回任务控制块指针, 创建失败返回NULL
  */
 SchedTask_t *framework_TaskCreate(uint8_t prio, EvtPos_t queueLen, SchedStateFunction_t initial)
 {
@@ -101,16 +101,13 @@ SchedTask_t *pTask = NULL;
 
 #if SCHED_TASK_CYCLE_EN
 /**
- * 说明: 1.设置任务周期循环信号产生的周期,
- *       2.周期为0表示不产生周期循环信号,
- *       3.复位周期循环信号节拍计数,
- *       4.可以选择是否立即产生信号(节拍0对应的信号)
+ * 设置任务周期循环信号产生的周期, 并复位周期循环信号节拍计数
  *
- * 参数: 1.task      - 任务控制块指针
- *       2.period    - 周期循环信号产生的周期
- *       3.immedTRIG - 是否立即触发信号(SCHED_TRUE/SCHED_FALSE)
+ * @param task: 任务控制块指针
  *
- * 返回: 无返回
+ * @param period: 周期循环信号产生的周期, 若为0则不产生周期循环信号
+ *
+ * @param immedTRIG: 设置是否立即触发信号(SCHED_TRUE/SCHED_FALSE)
  */
 void framework_TaskSetCyclePeriod(SchedTask_t *task, SchedTick_t period, SchedBool_t immedTRIG)
 {
@@ -140,11 +137,11 @@ SchedCPU_t cpu_sr;
 }
 
 /**
- * 说明: 获取周期循环信号节拍计数
+ * 获取指定任务的周期循环信号节拍计数
  *
- * 参数: 1.task - 任务控制块指针
+ * @param task: 指定任务的控制块指针
  *
- * 返回: 周期循环信号节拍计数
+ * @return: 周期循环信号节拍计数
  */
 SchedTick_t framework_TaskGetCycleTick(SchedTask_t *task)
 {
@@ -178,12 +175,11 @@ uint8_t i;
 }
 
 /**
- * 说明: 任务调度函数
+ * 实现一次任务调度
  *
- * 参数: 无参数
- *
- * 返回: 1.SCHED_TRUE  表示完成一次任务调度,
- *       2.SCHED_FALSE 表示没有就绪任务,进行了一次空操作
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE)
+ *          SCHED_TRUE  表示完成一次任务调度
+ *          SCHED_FALSE 表示没有就绪任务,进行了一次空操作
  */
 SchedBool_t framework_TaskExecute(void)
 {
@@ -242,7 +238,11 @@ SchedEvent_t    event;
                                     内部函数
 
 *******************************************************************************/
-/*记录就绪任务*/
+/**
+ * 记录就绪任务
+ *
+ * @param task: 待记录的任务控制块指针
+ */
 void __framework_TaskRecordReadyTask(SchedTask_t const *task)
 {
 uint8_t prio = task->prio;
@@ -251,7 +251,11 @@ uint8_t prio = task->prio;
     internal_PriotblRecordPrio(&taskReadyTable,prio);
 }
 
-/*清除就绪任务*/
+/**
+ * 清除就绪任务
+ *
+ * @param task: 待清除的任务控制块指针
+ */
 void __framework_TaskResetReadyTask(SchedTask_t const *task)
 {
 uint8_t prio = task->prio;
@@ -262,14 +266,12 @@ uint8_t prio = task->prio;
 
 #if SCHED_TASK_CYCLE_EN
 /**
- * 说明: 1.时间管理器的延时对象到时回调函数,
- *       2.返回0表示时间管理器无进一步动作,
- *       3.返回非0表示时间管理器将当前对象重新加入延时链表,返回值是延时时间
+ * 时间管理器的对象延时到时回调函数
  *
- * 参数: 1.pArrivalListItem - 结束延时的对象的链表项指针
+ * @param pArrivalListItem: 结束延时的对象的链表项指针
  *
- * 返回: 1.0  表示不将对象重新加入延时链表
- *       2.>0 表示将对象重新加入延时链表, 延时时间是返回值
+ * @return: 返回0表示时间管理器无进一步动作,
+ *          返回非零值表示时间管理器将当前对象重新加入延时链表,返回值是延时时间
  */
 SchedTick_t __framework_TaskTimeArrivalHandler(SchedList_t *pArrivalListItem)
 {
@@ -291,7 +293,12 @@ SchedTask_t *pTask;
                                     私有函数
 
 *******************************************************************************/
-/*获取最高优先级任务*/
+/**
+ * 获取最高优先级的就绪任务
+ *
+ * @return: 若存在就绪任务,则返回最高优先级的就绪任务控制块指针,
+ *          若当前无就绪任务,则返回NULL
+ */
 static SchedTask_t * prvGetHighestPriorityReadyTask(void)
 {
 SchedTask_t *pTask;

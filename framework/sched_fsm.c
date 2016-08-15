@@ -30,12 +30,11 @@ const SchedEvent_t internal_event[4] =
 *******************************************************************************/
 
 /**
- * 说明: 构造状态机
+ * 构造状态机
  *
- * 参数: 1.fsm     - 状态机指针
- *       2.initial - 状态机初始伪状态
+ * @param fsm: 状态机指针
  *
- * 返回: 无返回
+ * @param initial: 状态机初始伪状态
  */
 void framework_FSM_Ctor(SchedFSM_t *fsm, SchedStateFunction_t initial)
 {
@@ -43,11 +42,9 @@ void framework_FSM_Ctor(SchedFSM_t *fsm, SchedStateFunction_t initial)
 }
 
 /**
- * 说明: 初始化状态机,执行初始化状态转移
+ * 初始化状态机, 执行初始化状态转移
  *
- * 参数: 1.fsm - 状态机指针
- *
- * 返回: 无返回
+ * @param fsm: 状态机指针
  */
 void framework_FSM_Init(SchedFSM_t *fsm)
 {
@@ -64,12 +61,11 @@ SchedBase_t ret;
 }
 
 /**
- * 说明: 状态机处理事件
+ * 状态机处理事件
  *
- * 参数: 1.fsm - 状态机指针
- *       2.e   - 状态机待处理事件指针
+ * @param fsm: 状态机指针
  *
- * 返回: 无返回
+ * @param e: 待处理事件块指针
  */
 void framework_FSM_Dispatch(SchedFSM_t *fsm, SchedEvent_t const *e)
 {

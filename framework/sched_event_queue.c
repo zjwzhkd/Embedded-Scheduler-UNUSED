@@ -16,14 +16,14 @@
 *******************************************************************************/
 
 /**
- * 说明: 1.向指定任务传递一个事件
- *       2.使用消息队列存储事件
+ * 向指定任务传递一个事件
  *
- * 参数: 1.task - 目标任务控制块指针
- *       2.evt  - 待传递的事件块指针
+ * @param task: 目标任务控制块指针
  *
- * 返回: 1.SCHED_SUCCESS           表示发送成功
- *       2.SCHED_EVENT_SEND_FAILED 表示发送失败
+ * @param evt: 待传递的事件块指针, 通过复制事件块内容进行传递
+ *
+ * @return: SCHED_SUCCESS           表示发送成功
+ *          SCHED_EVENT_SEND_FAILED 表示发送失败
  */
 SchedStatus_t framework_EventSend(SchedTask_t *task, SchedEvent_t const *evt)
 {
@@ -53,14 +53,14 @@ SchedCPU_t cpu_sr;
 }
 
 /**
- * 说明: 1.向指定任务传递一个紧急事件
- *       2.使用消息队列存储事件
+ * 向指定任务传递一个紧急事件
  *
- * 参数: 1.task - 目标任务控制块指针
- *       2.evt  - 待传递的事件块指针
+ * @param task: 目标任务控制块指针
  *
- * 返回: 1.SCHED_SUCCESS           表示发送成功
- *       2.SCHED_EVENT_SEND_FAILED 表示发送失败
+ * @param evt: 待传递的事件块指针, 通过复制事件块内容进行传递
+ *
+ * @return: SCHED_SUCCESS           表示发送成功
+ *          SCHED_EVENT_SEND_FAILED 表示发送失败
  */
 SchedStatus_t framework_EventSendFront(SchedTask_t *task, SchedEvent_t const *evt)
 {
@@ -90,14 +90,14 @@ SchedCPU_t cpu_sr;
 }
 
 /**
- * 说明: 1.在中断函数中向指定任务传递一个事件
- *       2.使用消息队列存储事件
+ * 在中断函数中向指定任务传递一个事件
  *
- * 参数: 1.task - 目标任务控制块指针
- *       2.evt  - 待传递的事件块指针
+ * @param task: 目标任务控制块指针
  *
- * 返回: 1.SCHED_SUCCESS           表示发送成功
- *       2.SCHED_EVENT_SEND_FAILED 表示发送失败
+ * @param evt: 待传递的事件块指针, 通过复制事件块内容进行传递
+ *
+ * @return: SCHED_SUCCESS           表示发送成功
+ *          SCHED_EVENT_SEND_FAILED 表示发送失败
  */
 SchedStatus_t framework_EventSendFromISR(SchedTask_t *task, SchedEvent_t const *evt)
 {
@@ -132,14 +132,14 @@ SchedCPU_t cpu_sr;
 }
 
 /**
- * 说明: 1.在中断函数中向指定任务传递一个紧急事件
- *       2.使用消息队列存储事件
+ * 在中断函数中向指定任务传递一个紧急事件
  *
- * 参数: 1.task - 目标任务控制块指针
- *       2.evt  - 待传递的事件块指针
+ * @param task: 目标任务控制块指针
  *
- * 返回: 1.SCHED_SUCCESS           表示发送成功
- *       2.SCHED_EVENT_SEND_FAILED 表示发送失败
+ * @param evt: 待传递的事件块指针, 通过复制事件块内容进行传递
+ *
+ * @return: SCHED_SUCCESS           表示发送成功
+ *          SCHED_EVENT_SEND_FAILED 表示发送失败
  */
 SchedStatus_t framework_EventSendFrontFromISR(SchedTask_t *task, SchedEvent_t const *evt)
 {
@@ -181,13 +181,12 @@ SchedCPU_t cpu_sr;
 *******************************************************************************/
 
 /**
- * 说明: 1.尝试接收指定任务的事件块(实际上没有接收)
- *       2.使用消息队列存储事件
+ * 尝试接收指定任务已接收的事件块(实际上没有接收)
  *
- * 参数: task - 指定的任务控制块指针
+ * @param task: 指定的任务控制块指针
  *
- * 返回: 1.SCHED_SUCCESS              表示接收成功
- *       2.SCHED_EVENT_RECEIVE_FAILED 表示接收失败
+ * @return: SCHED_SUCCESS              表示接收成功
+ *          SCHED_EVENT_RECEIVE_FAILED 表示接收失败
  */
 SchedStatus_t __framework_EventTryReceive(SchedTask_t *task)
 {
@@ -206,14 +205,14 @@ SchedStatus_t ret;
 }
 
 /**
- * 说明: 1.从指定任务中接收一个事件
- *       2.使用消息队列存储事件
+ * 接收指定任务已接收的事件块
  *
- * 参数: 1.task - 指定的任务控制块指针
- *       2.evt  - 保存事件的事件块指针
+ * @param task: 指定的任务控制块指针
  *
- * 返回: 1.SCHED_SUCCESS              表示接收成功
- *       2.SCHED_EVENT_RECEIVE_FAILED 表示接收失败
+ * @param evt: 保存接收事件内容的事件块指针
+ *
+ * @return: SCHED_SUCCESS              表示接收成功
+ *          SCHED_EVENT_RECEIVE_FAILED 表示接收失败
  */
 SchedStatus_t __framework_EventReceive(SchedTask_t *task, SchedEvent_t *evt)
 {

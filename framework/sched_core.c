@@ -176,14 +176,11 @@ void framework_CoreTickHandler(void)
 
 *******************************************************************************/
 /**
- * 说明: 1.向时间管理器添加延时对象
- *       2.确保添加的延时对象链表项是孤立的!
- *       3.若延时时间为0,则不执行任何操作
+ * 向时间管理器添加延时对象
  *
- * 参数: 1.pListItem - 待添加的延时对象链表项指针
- *       2.delay     - 延时时间
+ * @param pListItem: 待添加到时间管理器的延时对象链表项指针, 链表项必须是孤立的
  *
- * 返回: 无返回
+ * @param delay: 延时时间, 若为0则不执行任何操作
  */
 void __framework_CoreTimeManagerAddDelay(SchedList_t *pListItem, SchedTick_t delay)
 {
@@ -210,12 +207,8 @@ SchedTick_t arrival;
 }
 
 /**
- * 说明: 1.更新时间管理器,用于优化节拍中断执行效率
- *       2.当对象链表项可能从延时链表中删除时,建议调用本函数
- *
- * 参数: 无参数
- *
- * 返回: 无返回
+ * 更新时间管理器,用于优化节拍中断执行效率,
+ * 当对象链表项可能从延时链表中删除时,建议调用本函数
  */
 void __framework_CoreTimeManagerUpdate(void)
 {

@@ -31,13 +31,12 @@ void framework_DaemonEnvirInit(void)
 }
 
 /**
- * 说明: 1.创建新的守护任务
- *       2.仅允许在调度器启动前创建守护任务
+ * 创建新的守护任务, 仅允许在调度器启动前创建守护任务
  *
- * 参数: 1.daemonFunc - 守护任务函数
+ * @param daemonFunc: 守护任务函数
  *
- * 返回: 1.NULL   表示守护任务创建失败
- *       2.非NULL 表示守护任务控制块指针
+ * @return: 若创建成功, 返回守护任务控制块指针
+ *          若创建失败, 返回NULL
  */
 SchedDaemon_t *framework_DaemonCreate(SchedDaemonFunction_t daemonFunc)
 {
@@ -54,16 +53,19 @@ SchedDaemon_t *pDaemon = NULL;
 }
 
 /**
- * 说明: 1.唤醒守护任务并执行给定的事件,
- *       2.当守护任务处于休眠状态(SCHED_DAEMON_DORMANT)或者
- *         运行状态(SCHED_DAEMON_RUNNING)时,允许唤醒守护任务
+ * 唤醒守护任务并执行给定的事件
  *
- * 参数: 1.daemon - 守护任务控制块指针
- *       2.evt    - 守护任务执行的事件块
- *       3.delay  - 守护任务执行延时(0表示直接就绪)
+ * @note: 当守护任务处于休眠状态(SCHED_DAEMON_DORMANT)或者
+ *        运行状态(SCHED_DAEMON_RUNNING)时,允许唤醒守护任务
  *
- * 返回: 1.SCHED_SUCCESS            表示守护任务唤醒成功
- *       2.SCHED_DAEMON_CALL_FAILED 表示守护任务唤醒失败
+ * @param daemon: 守护任务控制块指针
+ *
+ * @param evt: 守护任务待执行的事件
+ *
+ * @param delay: 守护任务执行延时, 延时为0表示守护任务立即就绪
+ *
+ * @return: SCHED_SUCCESS            表示守护任务唤醒成功
+ *          SCHED_DAEMON_CALL_FAILED 表示守护任务唤醒失败
  */
 SchedStatus_t framework_DaemonCall(SchedDaemon_t *daemon, SchedEvent_t const *evt, SchedTick_t delay)
 {
@@ -98,11 +100,9 @@ SchedCPU_t      cpu_sr;
 }
 
 /**
- * 说明: 终止指定的守护任务
+ * 终止指定的守护任务, 使得指定的守护任务进入休眠状态
  *
- * 参数: 1.daemon - 守护任务控制块指针
- *
- * 返回: 无返回
+ * @param daemon: 守护任务控制块指针
  */
 void framework_DaemonAbort(SchedDaemon_t *daemon)
 {
@@ -118,13 +118,13 @@ SchedCPU_t cpu_sr;
 }
 
 /**
- * 说明: 获取指定守护任务的状态
+ * 获取指定守护任务的状态
  *
- * 参数: 1.daemon - 守护任务控制块指针
+ * @param daemon: 守护任务控制块指针
  *
- * 返回: 1.SCHED_DAEMON_RUNNING 表示守护任务正在运行
- *       2.SCHED_DAEMON_ACTIVE  表示守护任务已被唤醒
- *       3.SCHED_DAEMON_DORMANT 表示守护任务处于休眠
+ * @return: SCHED_DAEMON_RUNNING 表示守护任务正在运行
+ *          SCHED_DAEMON_ACTIVE  表示守护任务已被唤醒
+ *          SCHED_DAEMON_DORMANT 表示守护任务处于休眠
  */
 SchedStatus_t framework_DaemonGetStatus(SchedDaemon_t *daemon)
 {
@@ -153,15 +153,18 @@ SchedCPU_t      cpu_sr;
 }
 
 /**
- * 说明: 1.在中断函数中唤醒守护任务并执行给定的事件,
- *       2.仅当守护任务处于休眠状态(SCHED_DAEMON_DORMANT), 允许在中断中唤醒守护任务
+ * 在中断函数中唤醒守护任务并执行给定的事件
  *
- * 参数: 1.daemon - 守护任务控制块指针
- *       2.evt    - 守护任务执行的事件块
- *       3.delay  - 守护任务执行延时(0表示直接就绪)
+ * @note: 仅当守护任务处于休眠状态(SCHED_DAEMON_DORMANT), 允许唤醒守护任务
  *
- * 返回: 1.SCHED_SUCCESS            表示守护任务唤醒成功
- *       2.SCHED_DAEMON_CALL_FAILED 表示守护任务唤醒失败
+ * @param daemon: 守护任务控制块指针
+ *
+ * @param evt: 守护任务待执行的事件
+ *
+ * @param delay: 守护任务执行延时, 延时为0表示守护任务立即就绪
+ *
+ * @return: SCHED_SUCCESS            表示守护任务唤醒成功
+ *          SCHED_DAEMON_CALL_FAILED 表示守护任务唤醒失败
  */
 SchedStatus_t framework_DaemonCallFromISR(SchedDaemon_t *daemon, SchedEvent_t const *evt, SchedTick_t delay)
 {
@@ -196,13 +199,13 @@ SchedCPU_t      cpu_sr;
 }
 
 /**
- * 说明: 在中断函数中获取指定守护任务的状态
+ * 在中断函数中获取指定守护任务的状态
  *
- * 参数: 1.daemon - 守护任务控制块指针
+ * @param daemon: 守护任务控制块指针
  *
- * 返回: 1.SCHED_DAEMON_RUNNING 表示守护任务正在运行
- *       2.SCHED_DAEMON_ACTIVE  表示守护任务已被唤醒
- *       3.SCHED_DAEMON_DORMANT 表示守护任务处于休眠
+ * @return: SCHED_DAEMON_RUNNING 表示守护任务正在运行
+ *          SCHED_DAEMON_ACTIVE  表示守护任务已被唤醒
+ *          SCHED_DAEMON_DORMANT 表示守护任务处于休眠
  */
 SchedStatus_t framework_DaemonGetStatusFromISR(SchedDaemon_t *daemon)
 {
@@ -231,12 +234,11 @@ SchedCPU_t      cpu_sr;
 }
 
 /**
- * 说明: 守护任务调度函数
+ * 完成一次守护任务调度
  *
- * 参数: 无参数
- *
- * 返回: 1.SCHED_TRUE表示完成一次任务调度,
- *       2.SCHED_FALSE表示没有就绪任务,进行了一次空操作
+ * @return: 布尔值(SCHED_TRUE/SCHED_FALSE)
+ *          SCHED_TRUE  表示完成一次守护任务调度
+ *          SCHED_FALSE 表示没有就绪的守护任务,进行了一次空操作
  */
 SchedBool_t framework_DaemonExecute(void)
 {
@@ -285,14 +287,12 @@ SchedCPU_t      cpu_sr;
 
 *******************************************************************************/
 /**
- * 说明: 1.时间管理器的延时对象到时回调函数,
- *       2.返回0表示时间管理器无进一步动作,
- *       3.返回非0表示时间管理器将当前对象重新加入延时链表,返回值是延时时间
+ * 时间管理器的对象延时到时回调函数
  *
- * 参数: 1.pArrivalListItem - 结束延时的对象的链表项指针
+ * @param pArrivalListItem: 结束延时的对象的链表项指针
  *
- * 返回: 1.0  表示不将对象重新加入延时链表
- *       2.>0 表示将对象重新加入延时链表, 延时时间是返回值
+ * @return: 返回0表示时间管理器无进一步动作,
+ *          返回非零值表示时间管理器将当前对象重新加入延时链表,返回值是延时时间
  */
 SchedTick_t __framework_DaemonTimeArrivalHandler(SchedList_t *pArrivalListItem)
 {
