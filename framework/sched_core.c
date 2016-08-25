@@ -74,8 +74,13 @@ void framework_CoreStart(void)
     }
 }
 
+/*******************************************************************************
+
+                                    中断函数
+
+*******************************************************************************/
 /*调度器节拍中断*/
-void framework_CoreTickHandler(void)
+void sched_CoreTickHandler(void)
 {
     /*调度器启动后开始处理节拍中断*/
     if (SCHED_CORE_RUNNING == framework_CoreStatus)

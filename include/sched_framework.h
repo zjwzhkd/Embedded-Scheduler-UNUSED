@@ -26,8 +26,6 @@ extern SchedStatus_t framework_CoreStatus;
 void framework_CoreInit(void);
 /*启动调度器*/
 void framework_CoreStart(void);
-/*调度器节拍中断*/
-void framework_CoreTickHandler(void);
 
 /* 内部函数 ------------------------------------------------------------------*/
 /*

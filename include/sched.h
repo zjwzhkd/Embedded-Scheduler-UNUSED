@@ -30,6 +30,13 @@ void sched_Init(void);
  */
 void sched_Start(void);
 
+/**
+ * 调度器节拍处理函数
+ *
+ * @note: 以SCHED_TICK_HZ的频率, 在节拍中断中调用本函数
+ */
+void sched_CoreTickHandler(void);
+
 #if SCHED_TASK_EN
 /*******************************************************************************
 
