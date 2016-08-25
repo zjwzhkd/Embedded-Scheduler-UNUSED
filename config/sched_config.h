@@ -10,8 +10,10 @@
 #define __SCHED_CONFIG_H
 
 /* 调度器参数 ----------------------------------------------------------------*/
-#define SCHED_TICK_HZ               ( (uint32_t) 1000 ) /* 调度器节拍频率(Hz) */
-#define SCHED_LOWEST_PRIORITY       ( 3 )               /* 调度器最低优先级   */
+#define SCHED_TICK_HZ               ( CPU_TICK_HZ ) /* 调度器节拍频率(Hz)     */
+#define SCHED_LOWEST_PRIORITY       ( 3 )           /* 调度器最低优先级       */
+#define SCHED_TOTAL_HEAP_SIZE       ( 1000 )        /* 调度器内存分配总大小   */
+#define SCHED_BYTE_ALIGNMENT        ( CPU_BYTE_ALIGNMENT )
 
 /* 调度器配置 ----------------------------------------------------------------*/
 #define SCHED_USE_16BIT_TICK_EN     ( 0 )   /* 0-使用32位节拍, 1-使用16位节拍 */
@@ -27,10 +29,5 @@
 /* 调度器调试 ----------------------------------------------------------------*/
 #define SCHED_CHECK_EN              ( 1 )   /* 调度器运行监测使能(0/1)        */
 #define SCHED_ASSERT_EN             ( 1 )   /* 调度器断言使能(0/1)            */
-
-/* 内存分配 ------------------------------------------------------------------*/
-#define SCHED_TOTAL_HEAP_SIZE       ( 1000 )        /* 调度器内存分配总大小   */
-#define SCHED_BYTE_ALIGNMENT        ( 8 )           /* 调度器内存分配字节对齐 */
-#define SCHED_BYTE_ALIGNMENT_MASK   ( SCHED_BYTE_ALIGNMENT-1 )
 
 #endif  /* __SCHED_CONFIG_H */
