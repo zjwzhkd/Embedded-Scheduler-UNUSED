@@ -13,7 +13,7 @@
 
 *******************************************************************************/
 #define SCHED_BYTE_ALIGNMENT_MASK   ( SCHED_BYTE_ALIGNMENT-1 )
-#define HEAP_TOTAL_SIZE             ( SCHED_TOTAL_HEAP_SIZE - SCHED_BYTE_ALIGNMENT )
+#define SCHED_ADJUST_HEAP_SIZE      ( SCHED_TOTAL_HEAP_SIZE - SCHED_BYTE_ALIGNMENT )
 static uint8_t  heapMemory[SCHED_TOTAL_HEAP_SIZE];
 static uint8_t *heapAlignedStart;
 static size_t   heapNextFreeByte;
@@ -47,7 +47,7 @@ void *ret = NULL;
         size += ( SCHED_BYTE_ALIGNMENT - (size&SCHED_BYTE_ALIGNMENT_MASK) );
     }
 
-    if (((size + heapNextFreeByte) < HEAP_TOTAL_SIZE) &&
+    if (((size + heapNextFreeByte) < SCHED_ADJUST_HEAP_SIZE) &&
         ((size + heapNextFreeByte) > heapNextFreeByte))
     {
         ret = heapAlignedStart + heapNextFreeByte;
