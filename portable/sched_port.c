@@ -17,11 +17,9 @@ void sched_PortInit(void)
 {
     /*环境检查*/
     SCHED_CHECK(sizeof(EvtMsg_t)>=sizeof(void*),chkSCHED_TYPE_CONVERSION_FAILED);
-    #if SCHED_TASK_CYCLE_EN
-    {
-        SCHED_CHECK(sizeof(EvtMsg_t)>=sizeof(SchedTick_t),chkSCHED_TYPE_CONVERSION_FAILED);
-    }
-    #endif
+#if SCHED_TASK_CYCLE_EN
+    SCHED_CHECK(sizeof(EvtMsg_t)>=sizeof(SchedTick_t),chkSCHED_TYPE_CONVERSION_FAILED);
+#endif
     /*初始化内存管理*/
     sched_PortHeapInit();
 }
@@ -35,9 +33,6 @@ void sched_PortInit(void)
  */
 void sched_PortEventCopy(SchedEvent_t *dest, SchedEvent_t const *src)
 {
-    /*参数校验*/
-    SCHED_ASSERT(NULL != dest, errSCHED_PARAM_PTR_IS_NULL);
-    /*复制事件块*/
     dest->sig = src->sig;
     dest->msg = src->msg;
 }

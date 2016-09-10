@@ -93,6 +93,8 @@ void internal_ListInsertEnd(SchedList_t *pList, SchedList_t *pListItem)
 void internal_ListRemove(SchedList_t *pListItem)
 {
     SCHED_ASSERT(SCHED_LIST_HEAD != pListItem->type,errSCHED_LIST_ERROR);
+    SCHED_ASSERT(NULL != pListItem->prev,errSCHED_LIST_ERROR);
+    SCHED_ASSERT(NULL != pListItem->next,errSCHED_LIST_ERROR);
 
     pListItem->prev->next = pListItem->next;
     pListItem->next->prev = pListItem->prev;
